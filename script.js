@@ -27,7 +27,15 @@ function buildGrid(squares) {
 buildGrid(squareCount);
 
 function colorBox(e) {
-  e.target.classList.add("color-box");
+  // 0 - 255
+  const red = Math.floor(Math.random() * 256);
+  const green = Math.floor(Math.random() * 256);
+  const blue = Math.floor(Math.random() * 256);
+
+  const color = `rgb(${red}, ${green}, ${blue})`;
+
+  e.target.style.backgroundColor = color;
+  console.log(color);
 }
 
 customizeGridBtn.addEventListener("click", promptSquaresPerRow);
