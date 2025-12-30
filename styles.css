@@ -8,3 +8,7 @@
   display: flex;
   flex-wrap: wrap;
 }
+
+.color-box {
+  background-color: pink;
+}
