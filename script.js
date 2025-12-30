@@ -1,32 +1,57 @@
 const containerDiv = document.getElementById("container");
+const customizeGridBtn = document.getElementById("customize-grid-btn");
 
-const SQUARE_COUNT = 16;
-const SQUARE_SIZE = 32;
-//how many squares in one row -- based on square_count
-const side = Math.sqrt(SQUARE_COUNT);
+const CONTAINER_WIDTH = 640; //based on css container width
 
-//container must be this wide to fit the proper square amount per row
-//4 squares per row
-//each square 32 size
-//so width must be 4 * 32 = 128px
-containerDiv.style.width = `${side * SQUARE_SIZE}px`;
+let squareCount = 16; // default 4x4 grid
 
 let squareArr = [];
 
-for (let i = 0; i < SQUARE_COUNT; i++) {
-  const squareDiv = document.createElement("div");
-  squareDiv.style.width = `${SQUARE_SIZE}px`;
-  squareDiv.style.height = `${SQUARE_SIZE}px`;
-  squareDiv.style.border = "2px solid black";
+function buildGrid(squares) {
+  for (let i = 0; i < squares; i++) {
+    const squareDiv = document.createElement("div");
 
-  //   squareDiv.classList.add(`square-div-${i}`);
+    //calc width per square -- 100% width / 16
+    const squareSize = CONTAINER_WIDTH / Math.sqrt(squares);
 
-  containerDiv.appendChild(squareDiv);
-  squareArr.push(i);
+    squareDiv.style.width = `${squareSize}px`;
+    squareDiv.style.height = `${squareSize}px`;
+    squareDiv.style.border = "2px solid black";
 
-  squareDiv.addEventListener("mouseenter", colorBox);
+    containerDiv.appendChild(squareDiv);
+    squareArr.push(i);
+
+    squareDiv.addEventListener("mouseenter", colorBox);
+  }
 }
+buildGrid(squareCount);
 
 function colorBox(e) {
   e.target.classList.add("color-box");
+}
+
+customizeGridBtn.addEventListener("click", promptSquaresPerRow);
+
+//user clicks button
+function promptSquaresPerRow() {
+  let squaresPerRow = parseInt(
+    prompt("How many squares per row would you like for your grid?")
+  );
+
+  while (squaresPerRow > 100) {
+    squaresPerRow = prompt(
+      "Invalid entry. Must be 100 squares per row or less. How many squares per row would you like for your grid?"
+    );
+  }
+
+  clearContainer();
+
+  let totalSquares = squaresPerRow * squaresPerRow;
+
+  buildGrid(totalSquares);
+}
+
+//clear the container
+function clearContainer() {
+  containerDiv.replaceChildren();
 }
